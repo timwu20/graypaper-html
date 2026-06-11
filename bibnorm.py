@@ -16,7 +16,13 @@ text = open(src, encoding="utf-8").read()
 parts = re.split(r"(?=@\w+\s*\{)", text)
 out = []
 added = 0
+stripped = 0
 for p in parts:
+    # Drop a redundant note={\url{...}} when a url field already carries it — it
+    # renders as a raw monospace URL jammed into the text, duplicating the "Link".
+    if re.search(r"\burl\s*=", p, re.I):
+        p, n = re.subn(r"\s*note\s*=\s*\{\s*\\url\{[^}]*\}\s*\}\s*,?", "", p, flags=re.I)
+        stripped += n
     has_link = re.search(r"\b(url|doi)\s*=", p, re.I)
     is_arxiv = re.search(r"archivePrefix\s*=\s*\{?\s*arXiv", p, re.I) or re.search(
         r"eprinttype\s*=\s*\{?\s*arxiv", p, re.I
@@ -31,4 +37,4 @@ for p in parts:
     out.append(p)
 
 open(dst, "w", encoding="utf-8").write("".join(out))
-print(f"bibnorm: added {added} arXiv url(s) -> {dst}")
+print(f"bibnorm: added {added} arXiv url(s), stripped {stripped} redundant note(s) -> {dst}")

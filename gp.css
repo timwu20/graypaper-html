@@ -90,8 +90,18 @@ math, math * {
 .ltx_title_subsection { font-size: 1.2rem;  font-weight: 700; margin: 1.8rem 0 .6rem; }
 .ltx_title_subsubsection { font-size: 1.05rem; font-weight: 700; margin: 1.4rem 0 .5rem; }
 
-/* Paragraphs / spacing */
-.ltx_p { margin: 0 0 1rem; }
+/* Paragraphs: first-line indent separation (no vertical gaps), matching the PDF.
+   LaTeXML already indents non-leading paragraphs and leaves the first after a
+   heading flush; a uniform bottom margin made that look inconsistent (the run-in
+   first paragraph is inline, so its gap didn't apply). */
+.ltx_p { margin: 0; }
+
+/* Inline code / URLs: counteract the browser's oversized generic monospace and
+   use a proper mono stack. */
+.ltx_font_typewriter, .ltx_url, .ltx_verbatim {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.86em;
+}
 
 /* Equations: room to breathe, scroll if a wide one overflows the column */
 .ltx_equation, .ltx_eqn_table, .ltx_eqnarray { margin: 1rem 0; }
