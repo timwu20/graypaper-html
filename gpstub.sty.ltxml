@@ -26,6 +26,16 @@ DefMacro('\makegpbackground',      '');
 DefMacro('\undef',                 '');
 RawTeX('\newif\ifoddpage');
 
+# --- GP glyphs built from raw TeX boxes that LaTeXML can't stack/overlay ---
+# \tricolon (the \is{k}{v} maps-to separator) is two stacked \blacktriangleright;
+# the preamble \newcommand defines it, so redefine at begin-document (after the
+# preamble) via the Perl AtBeginDocument hook — a preloaded \AtBeginDocument runs
+# before the LaTeX kernel exists and breaks the build.
+AtBeginDocument(sub {
+  DefMacro('\tricolon',
+    '\mathrel{\genfrac{}{}{0pt}{3}{\blacktriangleright}{\blacktriangleright}}');
+});
+
 # --- makecell: pass content through (drop star + optional alignment) ---
 DefMacro('\makecell OptionalMatch:* []{}', '#3');
 DefMacro('\thead OptionalMatch:* []{}',     '#3');
