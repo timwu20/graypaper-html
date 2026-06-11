@@ -1,0 +1,9 @@
+# Generated build output — reproducible via ./build.sh
+/dist/
+*.xml
+*.html
+*.log
+*.png
+LaTeXML.cache
+LaTeXML.css
+ltx-*.css

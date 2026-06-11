@@ -1,0 +1,42 @@
+# -*- mode: Perl -*-
+# LaTeXML stub bindings for building a light HTML render of the JAM Gray Paper.
+# Covers macros from packages LaTeXML lacks bindings for (and which aren't on
+# disk because there's no TeX install): tikz, eso-pic, changepage, stackengine,
+# biblatex, makecell, and the mathabx/MnSymbol/stmaryrd symbol glyphs.
+use strict;
+use warnings;
+use LaTeXML::Package;
+
+# --- layout / page / shipout machinery: no-ops (irrelevant to HTML) ---
+DefMacro('\usetikzlibrary{}',      '');
+DefMacro('\strictpagecheck',       '');
+DefMacro('\checkoddpage',          '');
+DefMacro('\stackMath',             '');
+DefMacro('\addbibresource{}',      '');
+DefMacro('\AddToShipoutPicture OptionalMatch:* {}', '');
+DefMacro('\printbibliography[]',   '');
+DefMacro('\makegpbackground',      '');
+DefMacro('\undef',                 '');
+RawTeX('\newif\ifoddpage');
+
+# --- makecell: pass content through (drop star + optional alignment) ---
+DefMacro('\makecell OptionalMatch:* []{}', '#3');
+DefMacro('\thead OptionalMatch:* []{}',     '#3');
+
+# --- symbol glyphs: map to nearest Unicode math character ---
+DefMath('\langlebar',   "\x{27E8}", role => 'OPEN',  stretchy => 'false'); # ⟨
+DefMath('\ranglebar',   "\x{27E9}", role => 'CLOSE', stretchy => 'false'); # ⟩
+DefMath('\lsem',        "\x{27E6}", role => 'OPEN',  stretchy => 'false'); # ⟦
+DefMath('\rsem',        "\x{27E7}", role => 'CLOSE', stretchy => 'false'); # ⟧
+DefMath('\lwavy',       "\x{2983}", role => 'OPEN',  stretchy => 'false'); # ⦃
+DefMath('\lWavy',       "\x{2983}", role => 'OPEN',  stretchy => 'false'); # ⦃
+DefMath('\nwspoon',     "\x{2216}", role => 'BINOP'); # ∖ (set-minus left)
+DefMath('\sespoon',     "\x{2216}", role => 'BINOP'); # ∖ (set-minus right)
+DefMath('\downspoon',   "\x{2293}", role => 'BINOP'); # ⊓ (disjoint)
+DefMath('\backsim',     "\x{223D}", role => 'RELOP'); # ∽
+DefMath('\blacksquare', "\x{25A0}");                  # ■
+DefMath('\lightning',   "\x{21AF}");                  # ↯ (panic)
+DefMath('\circledcirc', "\x{229A}", role => 'BINOP'); # ⊚
+DefMath('\circleddash', "\x{229D}", role => 'BINOP'); # ⊝
+
+1;
