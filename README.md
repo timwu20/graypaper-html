@@ -51,12 +51,24 @@ injected by [`toc.py`](toc.py) as the last build step; it re-runs idempotently.
 Preview while iterating on the CSS with [`shot.sh`](shot.sh) (headless Chrome
 screenshot): `./shot.sh out.png dist/graypaper.html 1300,2000`.
 
-To view, serve the `dist/` dir (relative CSS/font/image paths need a real origin
-or `file://` in place):
+To view, serve the `dist/` dir (relative CSS/font/image paths need a real origin):
 
 ```sh
-cd dist && python3 -m http.server 8722   # then open http://localhost:8722/graypaper.html
+./serve.sh   # idempotent; serves http://localhost:8722/graypaper.html
 ```
+
+### Deep links
+
+Stable anchors for citing specific places:
+
+| Target | Anchor | Example |
+|---|---|---|
+| Section *n* | `#S<n>` | `#S5` (§5 The Header) |
+| Subsection *n.m* | `#S<n>.SS<m>` | `#S2.SS1` (§2.1) |
+| Equation *(n.m)* | `#S<n>.E<m>` | `#S13.E9` (eq 13.9) |
+| Appendix *n* | `#A<n>` | `#A1` |
+| References | `#bib` | — |
+| A reference | `#bib.bibN` | `#bib.bib4` |
 
 ## How it works
 
