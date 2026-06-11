@@ -20,7 +20,7 @@ html, body {
 }
 
 /* ---- Fixed sidebar table of contents (injected by toc.py) ---- */
-body { padding-left: 17rem; }                 /* room for the fixed nav */
+body { padding-left: 17rem; transition: padding-left .18s ease; }  /* room for nav */
 #gp-toc {
   position: fixed;
   top: 0; left: 0; bottom: 0;
@@ -33,12 +33,25 @@ body { padding-left: 17rem; }                 /* room for the fixed nav */
   font-family: "STIX Two Text", Georgia, serif;
   font-size: 13px;
   line-height: 1.35;
+  transition: transform .18s ease;
 }
 #gp-toc .gp-toc-head {
   font-weight: 700; font-size: 12px; letter-spacing: .08em;
   text-transform: uppercase; color: #888;
-  margin: 0 0 .5rem .4rem;
+  margin: 0 0 .5rem 2.2rem;          /* clear the toggle button */
 }
+
+/* Collapse toggle — always visible at top-left */
+#gp-toc-toggle {
+  position: fixed; top: .5rem; left: .5rem; z-index: 1000;
+  width: 1.9rem; height: 1.9rem; padding: 0;
+  border: 1px solid #e2e2dd; border-radius: 6px;
+  background: #f7f7f5; color: #555; cursor: pointer;
+  font-size: 15px; line-height: 1;
+}
+#gp-toc-toggle:hover { background: #e8e8e2; color: #1a5fb4; }
+body.gp-toc-collapsed { padding-left: 0; }
+body.gp-toc-collapsed #gp-toc { transform: translateX(-100%); }
 #gp-toc a { display: block; text-decoration: none; color: #333; border-radius: 4px; padding: 2px 6px; }
 #gp-toc a:hover { background: #e8e8e2; color: #1a5fb4; }
 #gp-toc a:target, #gp-toc a.gp-active { background: #e3ebf7; color: #1a5fb4; }
@@ -51,6 +64,8 @@ body { padding-left: 17rem; }                 /* room for the fixed nav */
   body { padding-left: 0; }
   #gp-toc { position: static; width: auto; height: auto; bottom: auto;
             border-right: none; border-bottom: 1px solid #e2e2dd; max-height: 40vh; }
+  #gp-toc .gp-toc-head { margin-left: 2.2rem; }
+  body.gp-toc-collapsed #gp-toc { display: none; }
 }
 
 /* Math uses a real math font with full glyph coverage. */
