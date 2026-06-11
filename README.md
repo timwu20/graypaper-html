@@ -45,8 +45,18 @@ as `mathcolor="#FFFFFF" mathbackground="#262626"` (rendering as dark boxes on a
 light page). `build.sh` strips those attributes after conversion, and `gp.css`
 also overrides them — so the math renders dark-on-white.
 
+A fixed **sidebar table of contents** (all sections/subsections, anchor links) is
+injected by [`toc.py`](toc.py) as the last build step; it re-runs idempotently.
+
 Preview while iterating on the CSS with [`shot.sh`](shot.sh) (headless Chrome
 screenshot): `./shot.sh out.png dist/graypaper.html 1300,2000`.
+
+To view, serve the `dist/` dir (relative CSS/font/image paths need a real origin
+or `file://` in place):
+
+```sh
+cd dist && python3 -m http.server 8722   # then open http://localhost:8722/graypaper.html
+```
 
 ## How it works
 

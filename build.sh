@@ -60,4 +60,7 @@ LC_ALL=C sed -i '' \
     -e 's/color:#FFFFFF;\{0,1\}//g' \
     "$OUT/graypaper.html"
 
+# 4. Inject the fixed sidebar table of contents.
+python3 "$REPO_DIR/toc.py" "$OUT/graypaper.html"
+
 echo ">> Done: $OUT/graypaper.html"

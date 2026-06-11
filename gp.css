@@ -19,6 +19,40 @@ html, body {
   text-align: left;
 }
 
+/* ---- Fixed sidebar table of contents (injected by toc.py) ---- */
+body { padding-left: 17rem; }                 /* room for the fixed nav */
+#gp-toc {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: 17rem;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 1rem 0.75rem 2rem;
+  background: #f7f7f5;
+  border-right: 1px solid #e2e2dd;
+  font-family: "STIX Two Text", Georgia, serif;
+  font-size: 13px;
+  line-height: 1.35;
+}
+#gp-toc .gp-toc-head {
+  font-weight: 700; font-size: 12px; letter-spacing: .08em;
+  text-transform: uppercase; color: #888;
+  margin: 0 0 .5rem .4rem;
+}
+#gp-toc a { display: block; text-decoration: none; color: #333; border-radius: 4px; padding: 2px 6px; }
+#gp-toc a:hover { background: #e8e8e2; color: #1a5fb4; }
+#gp-toc a:target, #gp-toc a.gp-active { background: #e3ebf7; color: #1a5fb4; }
+#gp-toc .gp-toc-l1 { font-weight: 600; margin-top: .5rem; color: #1b1b1b; }
+#gp-toc .gp-toc-l2 { padding-left: 1.1rem; color: #444; }
+#gp-toc .gp-toc-l3 { padding-left: 2rem; color: #777; font-size: 12px; }
+
+/* Narrow screens: let the TOC scroll inline above the content. */
+@media (max-width: 1000px) {
+  body { padding-left: 0; }
+  #gp-toc { position: static; width: auto; height: auto; bottom: auto;
+            border-right: none; border-bottom: 1px solid #e2e2dd; max-height: 40vh; }
+}
+
 /* Math uses a real math font with full glyph coverage. */
 math, .ltx_Math {
   font-family: "Latin Modern Math", "STIX Two Math", math, serif;
