@@ -42,15 +42,27 @@ echo ">> output: $OUT"
     --log="$OUT/latexml.log" \
     graypaper.tex )
 
-# 2. LaTeXML XML -> HTML5 with presentation MathML (light, single-column).
+# 2. Bibliography: parse biblio.bib into LaTeXML XML so \cite resolves and a
+#    References section is generated (the GP uses biblatex, which LaTeXML lacks).
+if [ -f "$SRC/biblio.bib" ]; then
+  latexml --preload=gpstub.sty --path="$REPO_DIR" \
+      --dest="$OUT/biblio.bib.xml" --log="$OUT/biblio.log" \
+      "$SRC/biblio.bib"
+  BIB_OPT=(--bibliography="$OUT/biblio.bib.xml")
+else
+  BIB_OPT=()
+fi
+
+# 3. LaTeXML XML -> HTML5 with presentation MathML (light, single-column).
 #    gp.css is appended after LaTeXML's default stylesheet so it wins.
 latexmlpost \
     --format=html5 \
     --css="$REPO_DIR/gp.css" \
+    "${BIB_OPT[@]}" \
     --dest="$OUT/graypaper.html" \
     "$OUT/graypaper.xml"
 
-# 3. Strip the dark theme LaTeXML's xcolor binding baked onto MathML tokens
+# 4. Strip the dark theme LaTeXML's xcolor binding baked onto MathML tokens
 #    and inline styles (the GP's \pagecolor{verydarkgray}/\color{white}). gp.css
 #    also overrides these, but stripping keeps the HTML self-clean and smaller.
 LC_ALL=C sed -i '' \
@@ -60,7 +72,7 @@ LC_ALL=C sed -i '' \
     -e 's/color:#FFFFFF;\{0,1\}//g' \
     "$OUT/graypaper.html"
 
-# 4. Inject the fixed sidebar table of contents.
+# 5. Inject the fixed sidebar table of contents.
 python3 "$REPO_DIR/toc.py" "$OUT/graypaper.html"
 
 echo ">> Done: $OUT/graypaper.html"

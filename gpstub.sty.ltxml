@@ -19,9 +19,12 @@ DefMacro('\usetikzlibrary{}',      '');
 DefMacro('\strictpagecheck',       '');
 DefMacro('\checkoddpage',          '');
 DefMacro('\stackMath',             '');
-DefMacro('\addbibresource{}',      '');
+DefMacro('\addbibresource[]{}',    '');
 DefMacro('\AddToShipoutPicture OptionalMatch:* {}', '');
-DefMacro('\printbibliography[]',   '');
+# Turn biblatex's \printbibliography into LaTeXML's native bibliography
+# placeholder; latexmlpost --bibliography fills it and resolves \cite links.
+DefMacro('\printbibliography []',  '\bibliography{biblio}');
+DefMacro('\url{}',                 '#1');  # bib entries use \url
 DefMacro('\makegpbackground',      '');
 DefMacro('\undef',                 '');
 RawTeX('\newif\ifoddpage');
