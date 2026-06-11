@@ -25,11 +25,22 @@ e.g. at `~/dev/graypaper`, checked out to the version tag you want to render.
 
 ## Build
 
+Build all versions (into `dist/<version>/`, with a cross-version toggle):
+
 ```sh
-./build.sh [SRC_DIR] [OUT_DIR]
-# defaults: SRC_DIR=~/dev/graypaper  OUT_DIR=./dist
-open dist/graypaper.html
+./build-all.sh          # builds 0.8.0 and 0.7.2, wires up the version selector
+./serve.sh              # http://localhost:8722/  (redirects to latest)
 ```
+
+Or a single version:
+
+```sh
+./build.sh [SRC_DIR] [OUT_DIR]   # defaults: ~/dev/graypaper -> ./dist
+```
+
+Versions and their source checkouts are configured at the top of
+[`build-all.sh`](build-all.sh). Each page has a **version dropdown** (top of the
+sidebar) that switches to the same anchor in the other version's build.
 
 ## Theme & fonts
 

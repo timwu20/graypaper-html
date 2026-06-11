@@ -41,6 +41,14 @@ body { padding-left: 17rem; transition: padding-left .18s ease; }  /* room for n
   margin: 0 0 .5rem 2.2rem;          /* clear the toggle button */
 }
 
+/* Version selector at the top of the sidebar */
+#gp-version { margin: .1rem 0 1rem 2.2rem; display: flex; align-items: center; gap: .4rem; }
+#gp-version .gp-version-label { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: #999; }
+#gp-version select {
+  font: inherit; font-size: 12px; padding: 1px 4px;
+  border: 1px solid #ccc; border-radius: 4px; background: #fff; color: #333; cursor: pointer;
+}
+
 /* Collapse toggle — always visible at top-left */
 #gp-toc-toggle {
   position: fixed; top: .5rem; left: .5rem; z-index: 1000;

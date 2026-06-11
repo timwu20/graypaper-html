@@ -7,3 +7,7 @@
 LaTeXML.cache
 LaTeXML.css
 ltx-*.css
+# multi-version build dirs
+/dist/0.8.0/
+/dist/0.7.2/
+/dist/index.html
