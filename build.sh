@@ -45,9 +45,11 @@ echo ">> output: $OUT"
 # 2. Bibliography: parse biblio.bib into LaTeXML XML so \cite resolves and a
 #    References section is generated (the GP uses biblatex, which LaTeXML lacks).
 if [ -f "$SRC/biblio.bib" ]; then
+  # Normalize first (synthesize arXiv eprint URLs LaTeXML wouldn't otherwise link).
+  python3 "$REPO_DIR/bibnorm.py" "$SRC/biblio.bib" "$OUT/biblio.bib"
   latexml --preload=gpstub.sty --path="$REPO_DIR" \
       --dest="$OUT/biblio.bib.xml" --log="$OUT/biblio.log" \
-      "$SRC/biblio.bib"
+      "$OUT/biblio.bib"
   BIB_OPT=(--bibliography="$OUT/biblio.bib.xml")
 else
   BIB_OPT=()

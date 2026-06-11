@@ -24,7 +24,9 @@ DefMacro('\AddToShipoutPicture OptionalMatch:* {}', '');
 # Turn biblatex's \printbibliography into LaTeXML's native bibliography
 # placeholder; latexmlpost --bibliography fills it and resolves \cite links.
 DefMacro('\printbibliography []',  '\bibliography{biblio}');
-DefMacro('\url{}',                 '#1');  # bib entries use \url
+# Some bib entries put their URL in note={\url{...}}; load LaTeXML's real url
+# binding so \url makes a clickable link (a plain-text stub drops the hyperlink).
+RequirePackage('url');
 DefMacro('\makegpbackground',      '');
 DefMacro('\undef',                 '');
 RawTeX('\newif\ifoddpage');
