@@ -1,0 +1,64 @@
+/* Light, single-column reading theme for the LaTeXML Gray Paper render.
+   Loaded after LaTeXML's default CSS so these rules win. */
+
+:root { color-scheme: light; }
+
+html, body {
+  background: #ffffff;
+  color: #1b1b1b;
+}
+
+/* Body text — Computer Modern if installed, else STIX Two Text (PDF-like serif). */
+.ltx_page_main {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 8rem;
+  font-family: "Latin Modern Roman", "CMU Serif", "STIX Two Text", Georgia, serif;
+  font-size: 18px;
+  line-height: 1.7;
+  text-align: left;
+}
+
+/* Math uses a real math font with full glyph coverage. */
+math, .ltx_Math {
+  font-family: "Latin Modern Math", "STIX Two Math", math, serif;
+  font-size: 1.02em;
+}
+/* Override the dark mathcolor/mathbackground attributes LaTeXML baked onto
+   every MathML token (from the GP's \color{white}/\pagecolor dark theme). */
+math, math * {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #1b1b1b !important;
+}
+
+/* Title block */
+.ltx_title_document { font-size: 2rem; line-height: 1.2; margin-bottom: .25rem; }
+.ltx_author, .ltx_date, .ltx_personname { color: #444; }
+
+/* Headings */
+.ltx_title_section    { font-size: 1.5rem;  font-weight: 700; margin: 2.4rem 0 .8rem; line-height: 1.25; }
+.ltx_title_subsection { font-size: 1.2rem;  font-weight: 700; margin: 1.8rem 0 .6rem; }
+.ltx_title_subsubsection { font-size: 1.05rem; font-weight: 700; margin: 1.4rem 0 .5rem; }
+
+/* Paragraphs / spacing */
+.ltx_p { margin: 0 0 1rem; }
+
+/* Equations: room to breathe, scroll if a wide one overflows the column */
+.ltx_equation, .ltx_eqn_table, .ltx_eqnarray { margin: 1rem 0; }
+.ltx_equationgroup, table.ltx_equation { overflow-x: auto; display: block; }
+.ltx_eqn_eqno { color: #888; }
+
+/* Links / cross-refs */
+a, .ltx_ref { color: #1a5fb4; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Tables (PVM etc.) */
+.ltx_tabular { border-collapse: collapse; margin: 1rem 0; font-size: .95em; }
+.ltx_tabular td, .ltx_tabular th { padding: .25rem .5rem; vertical-align: top; }
+.ltx_tabular .ltx_border_t, .ltx_tabular .ltx_border_b { border-color: #ccc; }
+
+/* Defensive: if any dark inline style survived a stale build, neutralize it. */
+[style*="#262626"] { background-color: transparent !important; }
+[style*="background-color:#262626"] { background-color: #fff !important; }
+[style*="#FFFFFF"] { color: inherit !important; }

@@ -43,9 +43,21 @@ echo ">> output: $OUT"
     graypaper.tex )
 
 # 2. LaTeXML XML -> HTML5 with presentation MathML (light, single-column).
+#    gp.css is appended after LaTeXML's default stylesheet so it wins.
 latexmlpost \
     --format=html5 \
+    --css="$REPO_DIR/gp.css" \
     --dest="$OUT/graypaper.html" \
     "$OUT/graypaper.xml"
+
+# 3. Strip the dark theme LaTeXML's xcolor binding baked onto MathML tokens
+#    and inline styles (the GP's \pagecolor{verydarkgray}/\color{white}). gp.css
+#    also overrides these, but stripping keeps the HTML self-clean and smaller.
+LC_ALL=C sed -i '' \
+    -e 's/ mathbackground="#262626"//g' \
+    -e 's/ mathcolor="#FFFFFF"//g' \
+    -e 's/background-color:#262626;\{0,1\}//g' \
+    -e 's/color:#FFFFFF;\{0,1\}//g' \
+    "$OUT/graypaper.html"
 
 echo ">> Done: $OUT/graypaper.html"

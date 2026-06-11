@@ -7,6 +7,13 @@ use strict;
 use warnings;
 use LaTeXML::Package;
 
+# --- dark theme: neutralize so HTML renders light (no body uses \color) ---
+DefMacro('\pagecolor[]{}',   '');
+DefMacro('\nopagecolor',     '');
+DefMacro('\color[]{}',       '');
+DefMacro('\textcolor[]{}{}', '#3');   # pass content through, drop the colour
+DefMacro('\colorbox[]{}{}',  '#3');
+
 # --- layout / page / shipout machinery: no-ops (irrelevant to HTML) ---
 DefMacro('\usetikzlibrary{}',      '');
 DefMacro('\strictpagecheck',       '');

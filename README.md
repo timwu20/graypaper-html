@@ -31,6 +31,23 @@ e.g. at `~/dev/graypaper`, checked out to the version tag you want to render.
 open dist/graypaper.html
 ```
 
+## Theme & fonts
+
+The output is a **light, centered single-column** page. Body text uses Computer
+Modern (`Latin Modern Roman`/`CMU Serif`) if installed, else **STIX Two Text**;
+math uses `Latin Modern Math` else **STIX Two Math** — a PDF-like serif with full
+math-glyph coverage. Styling lives in [`gp.css`](gp.css), appended after
+LaTeXML's default stylesheet.
+
+The Gray Paper hardcodes a dark theme (`\pagecolor{verydarkgray}` +
+`\color{white}`), which LaTeXML's `xcolor` binding bakes onto every MathML token
+as `mathcolor="#FFFFFF" mathbackground="#262626"` (rendering as dark boxes on a
+light page). `build.sh` strips those attributes after conversion, and `gp.css`
+also overrides them — so the math renders dark-on-white.
+
+Preview while iterating on the CSS with [`shot.sh`](shot.sh) (headless Chrome
+screenshot): `./shot.sh out.png dist/graypaper.html 1300,2000`.
+
 ## How it works
 
 LaTeXML converts LaTeX → XML → HTML5 + MathML, and flattens the two-column
@@ -40,8 +57,9 @@ TeX install) plus custom symbol glyphs. [`gpstub.sty.ltxml`](gpstub.sty.ltxml) i
 a LaTeXML binding, preloaded before the document, that:
 
 - **no-ops** layout/page machinery irrelevant to HTML
-  (`tikz`/`\usetikzlibrary`, `eso-pic`/`\AddToShipoutPicture`, `pagecolor`,
-  `changepage`, `stackengine`, `\makegpbackground`, `biblatex`/`\printbibliography`);
+  (`tikz`/`\usetikzlibrary`, `eso-pic`/`\AddToShipoutPicture`, `pagecolor`/
+  `\color`, `changepage`, `stackengine`, `\makegpbackground`,
+  `biblatex`/`\printbibliography`);
 - **stubs** `\makecell`/`\thead` to pass their content through (fixes the PVM
   tables); and
 - **maps** ~14 custom math glyphs (`\lsem \rsem \langlebar \ranglebar \nwspoon
