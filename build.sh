@@ -16,6 +16,10 @@ REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SRC="${1:-$HOME/dev/graypaper}"
 OUT="${2:-$REPO_DIR/dist}"
 
+# Portable in-place sed: BSD/macOS needs an explicit (empty) backup suffix as a
+# separate arg; GNU/Linux sed must not get one. Detect by probing --version.
+if sed --version >/dev/null 2>&1; then SEDI=(-i); else SEDI=(-i ''); fi
+
 if ! command -v latexml >/dev/null 2>&1; then
   echo "error: latexml not found. Install with: brew install latexml" >&2
   exit 1
@@ -75,7 +79,7 @@ latexmlpost \
 # 4. Strip the dark theme LaTeXML's xcolor binding baked onto MathML tokens
 #    and inline styles (the GP's \pagecolor{verydarkgray}/\color{white}). gp.css
 #    also overrides these, but stripping keeps the HTML self-clean and smaller.
-LC_ALL=C sed -i '' \
+LC_ALL=C sed "${SEDI[@]}" \
     -e 's/ mathbackground="#262626"//g' \
     -e 's/ mathcolor="#FFFFFF"//g' \
     -e 's/background-color:#262626;\{0,1\}//g' \
@@ -90,7 +94,7 @@ python3 "$REPO_DIR/toc.py" "$OUT/graypaper.html"
 #    version's release date everywhere it appears.
 if [ -n "${GP_DATE:-}" ]; then
   BUILD_DATE="$(date '+%B %e, %Y' | sed 's/  */ /g')"
-  LC_ALL=C sed -i '' "s/$BUILD_DATE/$GP_DATE/g" "$OUT/graypaper.html"
+  LC_ALL=C sed "${SEDI[@]}" "s/$BUILD_DATE/$GP_DATE/g" "$OUT/graypaper.html"
 fi
 
 echo ">> Done: $OUT/graypaper.html (dated $GP_DATE)"

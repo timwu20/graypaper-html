@@ -69,6 +69,16 @@ Versions and their source checkouts are configured at the top of
 [`build-all.sh`](build-all.sh). Each page has a **version dropdown** (top of the
 sidebar) that switches to the same anchor in the other version's build.
 
+## Hosting
+
+A GitHub Actions workflow ([`.github/workflows/pages.yml`](.github/workflows/pages.yml))
+rebuilds and publishes to **GitHub Pages** on every push to `master`: it installs
+LaTeXML, clones the upstream source at the configured tags (a worktree per older
+version), runs `build-all.sh`, and deploys `dist/`. The `GP_*` env vars at the top
+of the workflow mirror `build-all.sh`'s `VERSIONS` list — keep them in sync.
+
+Live build: <https://timwu20.github.io/graypaper-html/>
+
 ## Theme & fonts
 
 The output is a **light, centered single-column** page. Body text uses Computer

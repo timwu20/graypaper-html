@@ -1,0 +1,71 @@
+name: Build & deploy to GitHub Pages
+
+# Builds every Gray Paper version (see VERSIONS/SRC in build-all.sh) from the
+# upstream LaTeX source and publishes dist/ to GitHub Pages.
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+# Least-privilege token for the Pages deployment.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time; newer pushes supersede in-flight runs.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+# Keep these in sync with build-all.sh's VERSIONS list.
+env:
+  GP_REPO: https://github.com/gavofyork/graypaper
+  GP_LATEST_TAG: v0.8.0
+  GP_OLDER_TAGS: v0.7.2
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout build recipe
+        uses: actions/checkout@v4
+
+      - name: Install LaTeXML
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends latexml
+          latexml --version
+
+      - name: Fetch Gray Paper source (latest + older worktrees)
+        run: |
+          set -euo pipefail
+          git clone "$GP_REPO" "$HOME/dev/graypaper"
+          git -C "$HOME/dev/graypaper" checkout "$GP_LATEST_TAG"
+          for tag in $GP_OLDER_TAGS; do
+            ver="${tag#v}"
+            git -C "$HOME/dev/graypaper" worktree add "$HOME/dev/graypaper-$ver" "$tag"
+          done
+
+      - name: Build all versions
+        run: ./build-all.sh
+
+      - name: Disable Jekyll (serve files verbatim)
+        run: touch dist/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
