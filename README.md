@@ -16,12 +16,39 @@ fully reproducible).
 
 ## Prerequisites
 
+Install LaTeXML:
+
 ```sh
 brew install latexml
 ```
 
-A checkout of the Gray Paper LaTeX source (https://github.com/gavofyork/graypaper),
-e.g. at `~/dev/graypaper`, checked out to the version tag you want to render.
+Clone the Gray Paper LaTeX source and check out the version tag(s) you want to
+render. The defaults in [`build-all.sh`](build-all.sh) expect the latest version
+at `~/dev/graypaper` and older versions in sibling worktrees:
+
+```sh
+# Latest version (0.8.0) at ~/dev/graypaper
+git clone https://github.com/gavofyork/graypaper ~/dev/graypaper
+cd ~/dev/graypaper
+git checkout v0.8.0
+
+# Each older version in its own worktree (so all tags coexist on disk)
+git worktree add ~/dev/graypaper-0.7.2 v0.7.2
+```
+
+Then point `build-all.sh`'s `VERSIONS` list and `SRC` map at those checkouts —
+each entry maps a version string to its source directory:
+
+```sh
+VERSIONS=(0.8.0 0.7.2)
+declare -A SRC=(
+  [0.8.0]="$HOME/dev/graypaper"
+  [0.7.2]="$HOME/dev/graypaper-0.7.2"
+)
+```
+
+To render just one version, you don't need the worktree — a single checkout
+passed to `build.sh` is enough (see [Build](#build) below).
 
 ## Build
 
