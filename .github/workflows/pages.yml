@@ -36,7 +36,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends latexml
-          latexml --version
+          latexml --VERSION   # LaTeXML's flag is uppercase; --version is unrecognized
 
       - name: Fetch Gray Paper source (latest + older worktrees)
         run: |
