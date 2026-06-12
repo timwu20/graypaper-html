@@ -72,7 +72,7 @@ sidebar) that switches to the same anchor in the other version's build.
 ## Hosting
 
 A GitHub Actions workflow ([`.github/workflows/pages.yml`](.github/workflows/pages.yml))
-rebuilds and publishes to **GitHub Pages** on every push to `master`: it installs
+rebuilds and publishes to **GitHub Pages** on every push to `main`: it installs
 LaTeXML, clones the upstream source at the configured tags (a worktree per older
 version), runs `build-all.sh`, and deploys `dist/`. The `GP_*` env vars at the top
 of the workflow mirror `build-all.sh`'s `VERSIONS` list — keep them in sync.

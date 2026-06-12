@@ -5,7 +5,7 @@ name: Build & deploy to GitHub Pages
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   workflow_dispatch:
 
 # Least-privilege token for the Pages deployment.
