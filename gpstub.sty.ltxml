@@ -40,6 +40,9 @@ RawTeX('\newif\ifoddpage');
 AtBeginDocument(sub {
   DefMacro('\tricolon', '\mathrel{\mathop{:}}');
 });
+# Note: the title date (\today) can't be pinned here — LaTeXML expands \today when
+# the preamble's \title is processed, before begin-document. build.sh fixes the
+# rendered date with a post-process sed instead.
 
 # --- makecell: pass content through (drop star + optional alignment) ---
 DefMacro('\makecell OptionalMatch:* []{}', '#3');

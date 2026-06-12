@@ -26,6 +26,14 @@ if [ ! -f "$SRC/graypaper.tex" ]; then
 fi
 
 VER="$(cat "$SRC/VERSION" 2>/dev/null || echo unknown)"
+
+# Pin the title date to the version's release (HEAD commit) date instead of the
+# build date that \today would produce. gpstub reads GP_DATE at begin-document.
+if [ -z "${GP_DATE:-}" ] && git -C "$SRC" rev-parse HEAD >/dev/null 2>&1; then
+  GP_DATE="$(git -C "$SRC" log -1 --format=%cd --date=format:'%B %d, %Y' \
+             | sed 's/ 0\([0-9]\),/ \1,/')"
+fi
+export GP_DATE
 mkdir -p "$OUT"
 echo ">> Building Gray Paper v$VER"
 echo ">> source: $SRC"
@@ -77,4 +85,12 @@ LC_ALL=C sed -i '' \
 # 5. Inject the fixed sidebar table of contents.
 python3 "$REPO_DIR/toc.py" "$OUT/graypaper.html"
 
-echo ">> Done: $OUT/graypaper.html"
+# 6. Pin the title date: \today rendered the build date (it expands in the
+#    preamble's \title, before any override can catch it), so replace it with the
+#    version's release date everywhere it appears.
+if [ -n "${GP_DATE:-}" ]; then
+  BUILD_DATE="$(date '+%B %e, %Y' | sed 's/  */ /g')"
+  LC_ALL=C sed -i '' "s/$BUILD_DATE/$GP_DATE/g" "$OUT/graypaper.html"
+fi
+
+echo ">> Done: $OUT/graypaper.html (dated $GP_DATE)"
