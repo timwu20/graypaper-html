@@ -28,7 +28,9 @@ DefMacro('\printbibliography []',  '\bibliography{biblio}');
 # binding so \url makes a clickable link (a plain-text stub drops the hyperlink).
 RequirePackage('url');
 DefMacro('\makegpbackground',      '');
-DefMacro('\undef',                 '');
+# \undef{\cmd} must swallow its argument: a zero-arg stub leaves {\cmd} behind,
+# which typesets the symbol as stray text (e.g. "A C I S P R X b" after §14.4.1).
+DefMacro('\undef{}',               '');
 RawTeX('\newif\ifoddpage');
 
 # --- GP glyphs built from raw TeX boxes that LaTeXML can't stack/overlay ---
